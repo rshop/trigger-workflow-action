@@ -11,10 +11,10 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: |
+    - shell: bash
+      run: |
         workflows=fromJson($(curl -H 'Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}' -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/${{ inputs.repository }}/actions/workflows))
 
         if [[ -z "$workflows.worflows[0].id" ]]; then
           curl --header 'Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}' -X POST https://api.github.com/repos/${{ inputs.repository }}/actions/workflows/$workflows.worflows[0].id/dispatches \\n  -d '{"ref":"${{ inputs.branch }}"}'
         fi
-      shell: bash

@@ -14,6 +14,8 @@ This action triggers workflow on another repository.
 
 ## Example usage
 
+```
 uses: rshop/trigger-workflow-action@v1
 with:
   repository: 'rshop/pipeline'
+```
