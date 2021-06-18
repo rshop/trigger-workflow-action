@@ -18,4 +18,5 @@ runs:
   using: 'composite'
   steps:
     - shell: bash
-      run: curl --header 'Authorization: Bearer ${{ inputs.token }}' -X POST https://api.github.com/repos/${{ inputs.repository }}/actions/workflows/${{ inputs.workflowId }}/dispatches -d '{"ref":"${{ inputs.branch }}"}'
+      run: |
+        curl --header 'Authorization: Bearer ${{ inputs.token }}' -X POST https://api.github.com/repos/${{ inputs.repository }}/actions/workflows/${{ inputs.workflowId }}/dispatches -d '{"ref":"${{ inputs.branch }}"}'
