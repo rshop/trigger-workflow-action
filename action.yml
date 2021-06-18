@@ -7,6 +7,9 @@ inputs:
   repository:
     description: 'repository'
     required: true
+  workflowId:
+    description: 'ID of workflow'
+    required: true
   branch:
     description: 'branch'
     required: true
@@ -14,14 +17,5 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - id: get-workflows
-      shell: bash
-      run: echo "::set-output name=workflows::$(curl -H 'Authorization: Bearer ${{ inputs.token }}' -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/${{ inputs.repository }}/actions/workflows)"
-
     - shell: bash
-      run: |
-        workflowId=${{ fromJson(steps.get-workflows.outputs.workflows).workflows[0].id }}
-
-        if [[ -z "$workflowId" ]]; then
-          curl --header 'Authorization: Bearer ${{ inputs.token }}' -X POST https://api.github.com/repos/${{ inputs.repository }}/actions/workflows/${workflowId}/dispatches -d '{"ref":"${{ inputs.branch }}"}'
-        fi
+      run: curl --header 'Authorization: Bearer ${{ inputs.token }}' -X POST https://api.github.com/repos/${{ inputs.repository }}/actions/workflows/${{ inputs.workflowId }}/dispatches -d '{"ref":"${{ inputs.branch }}"}'
