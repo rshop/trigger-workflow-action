@@ -1,5 +1,8 @@
 name: 'Trigger workflow action'
 description: 'Trigger workflow in another repository'
+branding:
+  icon: arrow-right-circle
+  color: green
 inputs:
   token:
     description: 'personal access token'
@@ -12,7 +15,7 @@ inputs:
     required: true
   branch:
     description: 'branch'
-    required: true
+    required: false
     default: 'main'
 runs:
   using: 'composite'
