@@ -12,7 +12,8 @@ inputs:
     required: true
   workflowId:
     description: 'ID of workflow'
-    required: true
+    required: false
+    default: 'build.yml'
   branch:
     description: 'branch'
     required: false
@@ -20,6 +21,16 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - shell: bash
-      run: |
-        curl --header 'Authorization: Bearer ${{ inputs.token }}' -X POST https://api.github.com/repos/${{ inputs.repository }}/actions/workflows/${{ inputs.workflowId }}/dispatches -d '{"ref":"${{ inputs.branch }}"}'
+    - name: Trigger workflow
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ inputs.token }}
+        script: |
+          const [owner, repo] = core.getInput('repository').split('/');
+
+          await github.actions.createWorkflowDispatch({
+            owner: owner,
+            repo: repo,
+            workflow_id: core.getInput('workflowId'),
+            ref: core.getInput('branch')
+          });

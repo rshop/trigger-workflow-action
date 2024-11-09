@@ -14,7 +14,7 @@ This action triggers workflow on another repository.
 
 ### `workflowId`
 
-**Required** ID of workflow to trigger.
+**Optional** ID of workflow to trigger. Defaults to `'build.yml'`.
 
 ### `branch`
 
@@ -27,5 +27,4 @@ uses: rshop/trigger-workflow-action@v1
 with:
   token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
   repository: 'rshop/repo'
-  workflowId: 12345
 ```
