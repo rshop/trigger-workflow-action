@@ -28,7 +28,7 @@ runs:
         script: |
           const [owner, repo] = core.getInput('repository').split('/');
 
-          await github.actions.createWorkflowDispatch({
+          await github.rest.actions.createWorkflowDispatch({
             owner: owner,
             repo: repo,
             workflow_id: core.getInput('workflowId'),
