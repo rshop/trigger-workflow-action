@@ -21,16 +21,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Trigger workflow
-      uses: actions/github-script@v7
-      with:
-        github-token: ${{ inputs.token }}
-        script: |
-          const [owner, repo] = core.getInput('repository').split('/');
-
-          await github.rest.actions.createWorkflowDispatch({
-            owner: owner,
-            repo: repo,
-            workflow_id: core.getInput('workflowId'),
-            ref: core.getInput('branch')
-          });
+    - shell: bash
+      run: |
+        curl --header 'Authorization: Bearer ${{ inputs.token }}' -X POST https://api.github.com/repos/${{ inputs.repository }}/actions/workflows/${{ inputs.workflowId }}/dispatches -d '{"ref":"${{ inputs.branch }}"}'
